@@ -1,7 +1,11 @@
 [package]
-name = "confluence"
+name = "atlas-confluence"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+description = "Simple library to interact with the Confluence REST API"
+homepage = "https://github.com/alvarium-hex/confluence-rs"
+repository = "https://github.com/alvarium-hex/confluence-rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
