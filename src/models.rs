@@ -5,6 +5,13 @@ pub struct Space {
     pub id: u64,
     pub key: String,
     pub name: String,
+    #[serde(rename = "_expandable")]
+    pub expandable: SpaceExpandable,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct SpaceExpandable {
+    pub homepage: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
