@@ -9,7 +9,7 @@ pub struct Space {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PageChildren {
-    pub page: PaginatedRepsonse<Page>,
+    pub page: PaginatedResponse<Page>,
     #[serde(rename = "_links")]
     pub links: Links,
 }
@@ -52,7 +52,7 @@ pub struct Links {
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct PaginatedRepsonse<T> {
+pub struct PaginatedResponse<T> {
     pub size: u64,
     pub limit: u64,
     pub start: u64,
@@ -63,5 +63,5 @@ pub struct PaginatedRepsonse<T> {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SpaceContentResult {
-    pub page: PaginatedRepsonse<Page>,
+    pub page: PaginatedResponse<Page>,
 }
