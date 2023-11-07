@@ -16,7 +16,7 @@ pub struct SpaceExpandable {
 
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct PageChildren {
-    pub page: PaginatedResponse<Page>,
+    pub page: PaginatedResponse<ChildPage>,
     #[serde(rename = "_links")]
     pub links: Links,
 }
@@ -26,11 +26,26 @@ pub struct Page {
     pub id: String,
     pub title: String,
     pub status: String,
-    pub space: Option<Space>,
+    pub space: Space,
+    pub version: Version,
     pub body: Option<Body>,
     #[serde(rename = "_links")]
     pub links: Links,
     pub children: Option<PageChildren>,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct ChildPage {
+    pub id: String,
+    pub title: String,
+    pub status: String,
+    #[serde(rename = "_links")]
+    pub links: Links,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Version {
+    pub number: u64,
 }
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

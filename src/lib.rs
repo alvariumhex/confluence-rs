@@ -39,7 +39,7 @@ impl Session {
         let response = self
             .client
             .get(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .send()
             .await
             .unwrap();
@@ -84,7 +84,7 @@ impl Session {
         let response = self
             .client
             .get(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .send()
             .await
             .unwrap();
@@ -118,7 +118,7 @@ impl Session {
         let response = self
             .client
             .post(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .json(&PostPage::new_new_page(title, ancestor, space_key, body))
             .send()
             .await
@@ -144,7 +144,7 @@ impl Session {
         let response = self
             .client
             .put(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .json(&PostPage::new_update_page(
                 id,
                 title,
