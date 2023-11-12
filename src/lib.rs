@@ -6,7 +6,7 @@ use reqwest::{
 
 use log::{error, trace};
 
-use crate::models::{Page, Space, SpaceContentResult, SpacesResult};
+use crate::models::{Page, PostPage, Space, SpaceContentResult, SpacesResult};
 
 pub mod models;
 
@@ -39,7 +39,7 @@ impl Session {
         let response = self
             .client
             .get(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .send()
             .await
             .unwrap();
@@ -84,7 +84,7 @@ impl Session {
         let response = self
             .client
             .get(url)
-            .query(&[("expand", "body.view,space,children.page")])
+            .query(&[("expand", "body.view,space,children.page,version")])
             .send()
             .await
             .unwrap();
@@ -104,6 +104,63 @@ impl Session {
             return Ok(pages);
         }
         Ok(pages)
+    }
+
+    pub async fn add_new_page(
+        &self,
+        space_key: String,
+        ancestor: Option<u64>,
+        title: String,
+        body: Option<String>,
+    ) -> Result<Page, ()> {
+        let url = format!("{}/rest/api/content", self.base_url);
+        trace!("POST {}", url);
+        let response = self
+            .client
+            .post(url)
+            .query(&[("expand", "body.view,space,children.page,version")])
+            .json(&PostPage::new_new_page(title, ancestor, space_key, body))
+            .send()
+            .await
+            .unwrap();
+        if response.status().is_client_error() || response.status().is_server_error() {
+            error!("Error adding new page: {}", response.text().await.unwrap());
+            return Err(());
+        }
+        let page: Page = serde_json::from_str(&response.text().await.unwrap()).unwrap();
+        Ok(page)
+    }
+
+    pub async fn update_page(
+        &self,
+        space_key: String,
+        id: u64,
+        new_version: u64,
+        title: String,
+        body: Option<String>,
+    ) -> Result<Page, ()> {
+        let url = format!("{}/rest/api/content/{}", self.base_url, id);
+        trace!("PUT {}", url);
+        let response = self
+            .client
+            .put(url)
+            .query(&[("expand", "body.view,space,children.page,version")])
+            .json(&PostPage::new_update_page(
+                id,
+                title,
+                space_key,
+                body,
+                new_version,
+            ))
+            .send()
+            .await
+            .unwrap();
+        if response.status().is_client_error() || response.status().is_server_error() {
+            error!("Error updating page: {}", response.text().await.unwrap());
+            return Err(());
+        }
+        let page: Page = serde_json::from_str(&response.text().await.unwrap()).unwrap();
+        Ok(page)
     }
 }
 
