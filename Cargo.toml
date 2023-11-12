@@ -1,6 +1,6 @@
 [package]
 name = "atlas-confluence"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 license = "MIT"
 description = "Simple library to interact with the Confluence REST API"
